@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -13,6 +14,9 @@ import com.nilmedov.eaterofsheep.model.Sprite;
 import com.nilmedov.eaterofsheep.threads.GameLoopThread;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private static final String LOG_TAG = GameView.class.getSimpleName();
+
     private GameLoopThread mGameLoopThread;
     private Sprite mSprite;
     private JoystickView mJoystick;
@@ -44,7 +48,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 mGameLoopThread.join();
                 retry = false;
             } catch (InterruptedException e) {
-
+                Log.e(LOG_TAG, "Interrupted Exception");
             }
         }
     }

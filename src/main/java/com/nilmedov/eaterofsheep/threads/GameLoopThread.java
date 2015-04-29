@@ -13,8 +13,8 @@ public class GameLoopThread extends Thread {
         this.mGameView = GameView;
     }
 
-    public void setRunning(boolean isRunning) {
-        this.running = isRunning;
+    public void setRunning(boolean running) {
+        this.running = running;
     }
 
     @Override

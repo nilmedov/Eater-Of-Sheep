@@ -19,7 +19,7 @@ public class Sprite {
     private static final int[] DIRECTION_TO_ANIMATION_MAP = { 3, 1, 0, 2 };
     private int mapIndex = 3;
 
-//    private GameView gameView;
+    private GameView gameView;
 
     private Bitmap picture;
 
@@ -28,7 +28,7 @@ public class Sprite {
 
     int direction;
 
-    private int speed = 5;
+    private int speed = 8;
 
     private int currentFrame = 0;
 
@@ -36,7 +36,7 @@ public class Sprite {
     private int height;
 
     public Sprite(GameView gameView, Bitmap picture) {
-//        this.gameView = gameView;
+        this.gameView = gameView;
         this.picture = picture;
         this.width = picture.getWidth() / BMP_COLUMNS;
         this.height = picture.getHeight() / BMP_ROWS;
@@ -51,32 +51,48 @@ public class Sprite {
 
         switch (direction) {
             case Const.Navigation.BOTTOM:
-                y = y + speed;
+                if(y <= gameView.getHeight() - height - speed) {
+                    y = y + speed;
+                }
                 break;
             case Const.Navigation.TOP:
-                y = y - speed;
+                if(y - speed >= 0) {
+                    y = y - speed;
+                }
                 break;
             case Const.Navigation.LEFT:
-                x = x + speed;
+                if(x <= gameView.getWidth() - height - speed) {
+                    x = x + speed;
+                }
                 break;
             case Const.Navigation.RIGHT:
-                x = x - speed;
+                if(x - speed >= 0) {
+                    x = x - speed;
+                }
                 break;
             case Const.Navigation.BOTTOM_LEFT:
-                y = y + speed;
-                x = x + speed;
+                if(y <= gameView.getHeight() - height - speed && x <= gameView.getWidth() - height - speed) {
+                    y = y + speed;
+                    x = x + speed;
+                }
                 break;
             case Const.Navigation.RIGHT_BOTTOM:
-                y = y + speed;
-                x = x - speed;
+                if(y <= gameView.getHeight() - height - speed && x - speed >= 0) {
+                    y = y + speed;
+                    x = x - speed;
+                }
                 break;
             case Const.Navigation.LEFT_TOP:
-                y = y - speed;
-                x = x + speed;
+                if(y - speed >= 0 && x <= gameView.getWidth() - height - speed) {
+                    y = y - speed;
+                    x = x + speed;
+                }
                 break;
             case Const.Navigation.TOP_RIGHT:
-                y = y - speed;
-                x = x - speed;
+                if(y - speed >= 0 && x - speed >= 0) {
+                    y = y - speed;
+                    x = x - speed;
+                }
                 break;
         }
         currentFrame = ++currentFrame % BMP_COLUMNS;
