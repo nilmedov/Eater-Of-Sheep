@@ -8,13 +8,14 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+/*
+ * Part of this code has been taken from https://github.com/zerokol/JoystickView
+ */
+
 public class JoystickView extends View implements Runnable {
     // Constants
     private final double RAD = 57.2957795;
     public final static long DEFAULT_LOOP_INTERVAL = 100; // 100 ms
-
-    // Variables
-    private static JoystickView instance;
 
     private OnJoystickMoveListener onJoystickMoveListener; // Listener
     private Thread thread = new Thread(this);

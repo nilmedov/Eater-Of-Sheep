@@ -79,10 +79,10 @@ public class Sprite {
                 x = x - speed;
                 break;
         }
+        currentFrame = ++currentFrame % BMP_COLUMNS;
     }
 
     public void onDraw(Canvas canvas) {
-        currentFrame = ++currentFrame % BMP_COLUMNS;
         int srcX = currentFrame * width;
         int srcY = getAnimationRow() * height;
         Rect src = new Rect(srcX, srcY, srcX + width, srcY + height);

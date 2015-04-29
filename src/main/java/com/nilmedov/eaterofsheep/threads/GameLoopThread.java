@@ -6,7 +6,7 @@ import com.nilmedov.eaterofsheep.views.GameView;
 
 public class GameLoopThread extends Thread {
     private static final long FPS = 10;
-    private boolean isRunning = false;
+    private boolean running = false;
     private GameView mGameView;
 
     public GameLoopThread(GameView GameView) {
@@ -14,7 +14,7 @@ public class GameLoopThread extends Thread {
     }
 
     public void setRunning(boolean isRunning) {
-        this.isRunning = isRunning;
+        this.running = isRunning;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class GameLoopThread extends Thread {
         long startTime;
         long sleepTime;
 
-        while (isRunning) {
+        while (running) {
             Canvas canvas = null;
             startTime = System.currentTimeMillis();
 
