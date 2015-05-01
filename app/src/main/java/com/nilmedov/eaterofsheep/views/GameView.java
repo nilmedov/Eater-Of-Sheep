@@ -3,13 +3,15 @@ package com.nilmedov.eaterofsheep.views;
 import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
+import com.nilmedov.eaterofsheep.navigation.JoystickView;
+import com.nilmedov.eaterofsheep.navigation.NavigationController;
 import com.nilmedov.eaterofsheep.R;
+import com.nilmedov.eaterofsheep.model.Map;
 import com.nilmedov.eaterofsheep.model.Sprite;
 import com.nilmedov.eaterofsheep.threads.GameLoopThread;
 
@@ -18,8 +20,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private static final String LOG_TAG = GameView.class.getSimpleName();
 
     private GameLoopThread mGameLoopThread;
+
+    private NavigationController mNavigationController;
+
+    private Map mMap;
     private Sprite mSprite;
-    private JoystickView mJoystick;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -29,7 +34,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        mMap = new Map(BitmapFactory.decodeResource(getResources(), R.mipmap.background));
         mSprite = new Sprite(this, BitmapFactory.decodeResource(getResources(), R.mipmap.sprite));
+        mNavigationController = new NavigationController(this, mSprite, mMap);
         mGameLoopThread.setRunning(true);
         mGameLoopThread.start();
     }
@@ -54,16 +61,16 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void doDraw(Canvas canvas) {
-        canvas.drawColor(Color.BLACK);
+        //canvas.drawColor(Color.BLACK);
+        mMap.onDraw(canvas);
         mSprite.onDraw(canvas);
     }
 
     public void setJoystick(JoystickView joystick) {
-        mJoystick = joystick;
-        mJoystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
+        joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
             @Override
             public void onValueChanged(int angle, int power, int direction) {
-                mSprite.setMovementDirection(direction);
+                mNavigationController.movePlayer(direction);
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
     }

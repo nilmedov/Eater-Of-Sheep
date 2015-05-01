@@ -1,4 +1,4 @@
-package com.nilmedov.eaterofsheep.views;
+package com.nilmedov.eaterofsheep.navigation;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -16,6 +16,15 @@ public class JoystickView extends View implements Runnable {
     // Constants
     private final double RAD = 57.2957795;
     public final static long DEFAULT_LOOP_INTERVAL = 100; // 100 ms
+
+    public final static int LEFT = 5;
+    public final static int TOP_LEFT = 4;
+    public final static int TOP = 3;
+    public final static int TOP_RIGHT = 2;
+    public final static int RIGHT = 1;
+    public final static int BOTTOM_RIGHT = 8;
+    public final static int BOTTOM = 7;
+    public final static int BOTTOM_LEFT = 6;
 
     private OnJoystickMoveListener onJoystickMoveListener; // Listener
     private Thread thread = new Thread(this);

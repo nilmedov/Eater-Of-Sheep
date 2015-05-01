@@ -6,7 +6,7 @@ import android.view.Window;
 
 import com.nilmedov.eaterofsheep.R;
 import com.nilmedov.eaterofsheep.views.GameView;
-import com.nilmedov.eaterofsheep.views.JoystickView;
+import com.nilmedov.eaterofsheep.navigation.JoystickView;
 
 public class MainActivity extends Activity {
 

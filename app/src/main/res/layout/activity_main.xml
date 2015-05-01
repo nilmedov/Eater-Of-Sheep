@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <com.nilmedov.eaterofsheep.views.JoystickView
+    <com.nilmedov.eaterofsheep.navigation.JoystickView
         android:id="@+id/joystick"
         android:layout_width="150dp"
         android:layout_height="150dp"

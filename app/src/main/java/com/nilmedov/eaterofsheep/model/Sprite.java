@@ -4,10 +4,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 
-import com.nilmedov.eaterofsheep.utils.Const;
+import com.nilmedov.eaterofsheep.navigation.JoystickView;
 import com.nilmedov.eaterofsheep.views.GameView;
-
-import java.util.Random;
 
 public class Sprite {
     private static final int BMP_ROWS = 4;
@@ -41,64 +39,51 @@ public class Sprite {
         this.width = picture.getWidth() / BMP_COLUMNS;
         this.height = picture.getHeight() / BMP_ROWS;
 
+        x = gameView.getWidth() / 2;
+        y = gameView.getHeight() / 2;
         setSpeed(10);
     }
 
-    public void setMovementDirection(int direction) {
-        this.direction = direction;
+    public int getWidth() {
+        return width;
+    }
 
-        switch (direction) {
-            case Const.Navigation.BOTTOM:
-                if(y <= gameView.getHeight() - height - speed) {
-                    y = y + speed;
-                }
-                break;
-            case Const.Navigation.TOP:
-                if(y - speed >= 0) {
-                    y = y - speed;
-                }
-                break;
-            case Const.Navigation.LEFT:
-                if(x <= gameView.getWidth() - height - speed) {
-                    x = x + speed;
-                }
-                break;
-            case Const.Navigation.RIGHT:
-                if(x - speed >= 0) {
-                    x = x - speed;
-                }
-                break;
-            case Const.Navigation.BOTTOM_LEFT:
-                if(y <= gameView.getHeight() - height - speed && x <= gameView.getWidth() - height - speed) {
-                    y = y + diagonalSpeed;
-                    x = x + diagonalSpeed;
-                }
-                break;
-            case Const.Navigation.RIGHT_BOTTOM:
-                if(y <= gameView.getHeight() - height - speed && x - speed >= 0) {
-                    y = y + diagonalSpeed;
-                    x = x - diagonalSpeed;
-                }
-                break;
-            case Const.Navigation.LEFT_TOP:
-                if(y - speed >= 0 && x <= gameView.getWidth() - height - speed) {
-                    y = y - diagonalSpeed;
-                    x = x + diagonalSpeed;
-                }
-                break;
-            case Const.Navigation.TOP_RIGHT:
-                if(y - speed >= 0 && x - speed >= 0) {
-                    y = y - diagonalSpeed;
-                    x = x - diagonalSpeed;
-                }
-                break;
-        }
-        currentFrame = ++currentFrame % BMP_COLUMNS;
+    public int getHeight() {
+        return height;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public int getDiagonalSpeed() {
+        return diagonalSpeed;
+    }
+
+    public int getSpeed() {
+        return speed;
     }
 
     public void setSpeed(int speed) {
         this.speed = speed;
         diagonalSpeed = (int) Math.round(speed * 0.586);
+    }
+
+    public void nextAnimation(int direction) {
+        this.direction = direction;
+        currentFrame = ++currentFrame % BMP_COLUMNS;
     }
 
     public void onDraw(Canvas canvas) {
@@ -111,16 +96,16 @@ public class Sprite {
     }
 
     private int getAnimationRow() {
-        if(direction == Const.Navigation.BOTTOM) {
+        if(direction == JoystickView.BOTTOM) {
             mapIndex = 2;
-        } else if(direction == Const.Navigation.TOP) {
+        } else if(direction == JoystickView.TOP) {
             mapIndex = 0;
-        } else if(direction == Const.Navigation.RIGHT || direction == Const.Navigation.RIGHT_BOTTOM
-                || direction == Const.Navigation.TOP_RIGHT) {
-            mapIndex = 1;
-        } else if(direction == Const.Navigation.LEFT || direction == Const.Navigation.BOTTOM_LEFT
-                || direction == Const.Navigation.LEFT_TOP) {
+        } else if(direction == JoystickView.RIGHT || direction == JoystickView.BOTTOM_RIGHT
+                || direction == JoystickView.TOP_RIGHT) {
             mapIndex = 3;
+        } else if(direction == JoystickView.LEFT || direction == JoystickView.BOTTOM_LEFT
+                || direction == JoystickView.TOP_LEFT) {
+            mapIndex = 1;
         }
         return DIRECTION_TO_ANIMATION_MAP[mapIndex];
     }
