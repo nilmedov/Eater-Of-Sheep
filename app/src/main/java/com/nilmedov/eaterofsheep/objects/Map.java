@@ -1,4 +1,4 @@
-package com.nilmedov.eaterofsheep.model;
+package com.nilmedov.eaterofsheep.objects;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

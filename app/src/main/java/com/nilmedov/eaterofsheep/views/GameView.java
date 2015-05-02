@@ -9,10 +9,10 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.nilmedov.eaterofsheep.navigation.JoystickView;
-import com.nilmedov.eaterofsheep.navigation.NavigationController;
+import com.nilmedov.eaterofsheep.navigation.PlayerNavigationController;
 import com.nilmedov.eaterofsheep.R;
-import com.nilmedov.eaterofsheep.model.Map;
-import com.nilmedov.eaterofsheep.model.Sprite;
+import com.nilmedov.eaterofsheep.objects.Map;
+import com.nilmedov.eaterofsheep.objects.Sprite;
 import com.nilmedov.eaterofsheep.threads.GameLoopThread;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {
@@ -21,7 +21,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
     private GameLoopThread mGameLoopThread;
 
-    private NavigationController mNavigationController;
+    private PlayerNavigationController mPlayerNavigationController;
 
     private Map mMap;
     private Sprite mSprite;
@@ -35,8 +35,13 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mMap = new Map(BitmapFactory.decodeResource(getResources(), R.mipmap.background));
-        mSprite = new Sprite(this, BitmapFactory.decodeResource(getResources(), R.mipmap.sprite));
-        mNavigationController = new NavigationController(this, mSprite, mMap);
+        mSprite = new Sprite(this,
+                BitmapFactory.decodeResource(getResources(), R.mipmap.sprite),
+                0,
+                0,
+                10
+        );
+        mPlayerNavigationController = new PlayerNavigationController(this, mSprite, mMap);
         mGameLoopThread.setRunning(true);
         mGameLoopThread.start();
     }
@@ -49,6 +54,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
         boolean retry = true;
+        mGameLoopThread.setPause(false);
         mGameLoopThread.setRunning(false);
         while (retry) {
             try {
@@ -61,16 +67,23 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void doDraw(Canvas canvas) {
-        //canvas.drawColor(Color.BLACK);
         mMap.onDraw(canvas);
         mSprite.onDraw(canvas);
+    }
+
+    public void onPause() {
+        mGameLoopThread.setPause(true);
+    }
+
+    public void onResume() {
+        mGameLoopThread.setPause(false);
     }
 
     public void setJoystick(JoystickView joystick) {
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
             @Override
             public void onValueChanged(int angle, int power, int direction) {
-                mNavigationController.movePlayer(direction);
+                mPlayerNavigationController.movePlayer(direction);
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
     }

@@ -1,12 +1,10 @@
 package com.nilmedov.eaterofsheep.navigation;
 
-import android.util.Log;
-
-import com.nilmedov.eaterofsheep.model.Map;
-import com.nilmedov.eaterofsheep.model.Sprite;
+import com.nilmedov.eaterofsheep.objects.Map;
+import com.nilmedov.eaterofsheep.objects.Sprite;
 import com.nilmedov.eaterofsheep.views.GameView;
 
-public class NavigationController {
+public class PlayerNavigationController {
 
     private GameView mGameView;
     private Sprite mSprite;
@@ -15,7 +13,7 @@ public class NavigationController {
     private int widthDifference;
     private int heightDifference;
 
-    public NavigationController(GameView gameView, Sprite sprite, Map map) {
+    public PlayerNavigationController(GameView gameView, Sprite sprite, Map map) {
         mGameView = gameView;
         mSprite = sprite;
         mMap = map;
@@ -31,8 +29,9 @@ public class NavigationController {
 
                     if(Math.abs(mMap.getY()) <= heightDifference - mSprite.getSpeed()) {
                         mMap.setY(mMap.getY() - mSprite.getSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() + mSprite.getSpeed());
                     }
-                    mSprite.setY(mSprite.getY() + mSprite.getSpeed());
                 }
                 break;
             case JoystickView.TOP:
@@ -40,8 +39,9 @@ public class NavigationController {
 
                     if(mMap.getY() + mSprite.getSpeed() <= 0) {
                         mMap.setY(mMap.getY() + mSprite.getSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() - mSprite.getSpeed());
                     }
-                    mSprite.setY(mSprite.getY() - mSprite.getSpeed());
                 }
                 break;
             case JoystickView.LEFT:
@@ -49,8 +49,9 @@ public class NavigationController {
 
                     if(mMap.getX() + mSprite.getSpeed() <= 0) {
                         mMap.setX(mMap.getX() + mSprite.getSpeed());
+                    } else {
+                        mSprite.setX(mSprite.getX() - mSprite.getSpeed());
                     }
-                    mSprite.setX(mSprite.getX() - mSprite.getSpeed());
                 }
                 break;
             case JoystickView.RIGHT:
@@ -58,8 +59,9 @@ public class NavigationController {
 
                     if(Math.abs(mMap.getX()) <= widthDifference - mSprite.getSpeed()) {
                         mMap.setX(mMap.getX() - mSprite.getSpeed());
+                    } else {
+                        mSprite.setX(mSprite.getX() + mSprite.getSpeed());
                     }
-                    mSprite.setX(mSprite.getX() + mSprite.getSpeed());
                 }
                 break;
             case JoystickView.BOTTOM_LEFT:
@@ -70,9 +72,10 @@ public class NavigationController {
                             && mMap.getX() + mSprite.getDiagonalSpeed() <= 0) {
                         mMap.setY(mMap.getY() - mSprite.getDiagonalSpeed());
                         mMap.setX(mMap.getX() + mSprite.getDiagonalSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
+                        mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
                     }
-                    mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
-                    mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
                 }
                 break;
             case JoystickView.BOTTOM_RIGHT:
@@ -83,9 +86,10 @@ public class NavigationController {
                             && Math.abs(mMap.getX()) <= widthDifference - mSprite.getDiagonalSpeed()) {
                         mMap.setY(mMap.getY() - mSprite.getDiagonalSpeed());
                         mMap.setX(mMap.getX() - mSprite.getDiagonalSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
+                        mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
                     }
-                    mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
-                    mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
                 }
                 break;
             case JoystickView.TOP_LEFT:
@@ -94,9 +98,10 @@ public class NavigationController {
                     if(mMap.getY() + mSprite.getDiagonalSpeed() <= 0 && mMap.getX() + mSprite.getDiagonalSpeed() <= 0) {
                         mMap.setY(mMap.getY() + mSprite.getDiagonalSpeed());
                         mMap.setX(mMap.getX() + mSprite.getDiagonalSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
+                        mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
                     }
-                    mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
-                    mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
                 }
                 break;
             case JoystickView.TOP_RIGHT:
@@ -107,9 +112,10 @@ public class NavigationController {
                             && Math.abs(mMap.getX()) <= widthDifference - mSprite.getDiagonalSpeed()) {
                         mMap.setY(mMap.getY() + mSprite.getDiagonalSpeed());
                         mMap.setX(mMap.getX() - mSprite.getDiagonalSpeed());
+                    } else {
+                        mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
+                        mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
                     }
-                    mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
-                    mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
                 }
                 break;
         }
