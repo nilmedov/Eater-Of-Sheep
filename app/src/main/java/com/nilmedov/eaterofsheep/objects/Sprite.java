@@ -10,11 +10,12 @@ import com.nilmedov.eaterofsheep.views.GameView;
 public class Sprite extends BaseActiveObject{
 
 
-    public Sprite(GameView gameView, Bitmap picture, int x, int y, int speed) {
-        super(gameView, picture, x, y, speed);
+    public Sprite(GameView gameView, Bitmap picture, int x, int y, int speed, int direction) {
+        super(gameView, picture, x, y, speed, direction);
         mapIndex = 3;
     }
 
+    @Override
     public void onDraw(Canvas canvas) {
         int srcX = currentFrame * getWidth();
         int srcY = getAnimationRow() *  getHeight();

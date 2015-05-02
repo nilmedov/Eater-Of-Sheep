@@ -15,15 +15,16 @@ public abstract class BaseActiveObject extends BaseObject{
     private static final int[] DIRECTION_TO_ANIMATION_MAP = { 3, 1, 0, 2 };
     protected int mapIndex;
 
-    protected int direction;
+    private int direction;
 
     private int speed;
     private int diagonalSpeed;
 
     protected int currentFrame = 0;
 
-    public BaseActiveObject(GameView gameView, Bitmap picture, int x, int y, int speed) {
+    public BaseActiveObject(GameView gameView, Bitmap picture, int x, int y, int speed, int direction) {
         super(gameView, picture, x, y);
+        this.direction = direction;
 
         setWidth(getWidth() / BMP_COLUMNS);
         setHeight(getHeight() / BMP_ROWS);
@@ -43,8 +44,15 @@ public abstract class BaseActiveObject extends BaseObject{
         return diagonalSpeed;
     }
 
-    public void nextAnimation(int direction) {
+    public int getDirection() {
+        return direction;
+    }
+
+    public void setDirection(int direction) {
         this.direction = direction;
+    }
+
+    public void nextAnimation() {
         currentFrame = ++currentFrame % BMP_COLUMNS;
     }
 

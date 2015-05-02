@@ -4,125 +4,118 @@ import com.nilmedov.eaterofsheep.objects.Map;
 import com.nilmedov.eaterofsheep.objects.Sprite;
 import com.nilmedov.eaterofsheep.views.GameView;
 
-public class PlayerNavigationController {
+public class PlayerNavigationController extends BaseNavigationController{
 
-    private GameView mGameView;
-    private Sprite mSprite;
-    private Map mMap;
+    private Sprite sprite;
 
     private int widthDifference;
     private int heightDifference;
 
     public PlayerNavigationController(GameView gameView, Sprite sprite, Map map) {
-        mGameView = gameView;
-        mSprite = sprite;
-        mMap = map;
-
+        super(gameView, map);
+        this.sprite = sprite;
         widthDifference = map.getWidth() - gameView.getWidth();
         heightDifference = map.getHeight() - gameView.getHeight();
     }
 
-    public void movePlayer(int direction) {
-        switch (direction) {
+    @Override
+    public void move() {
+        switch (sprite.getDirection()) {
             case JoystickView.BOTTOM:
-                if(mSprite.getY() <= mGameView.getHeight() - mSprite.getHeight() - mSprite.getSpeed()) {
+                if(sprite.getY() <= gameView.getHeight() - sprite.getHeight() - sprite.getSpeed()) {
 
-                    if(Math.abs(mMap.getY()) <= heightDifference - mSprite.getSpeed()) {
-                        mMap.setY(mMap.getY() - mSprite.getSpeed());
+                    if(Math.abs(map.getY()) <= heightDifference - sprite.getSpeed()) {
+                        map.setY(map.getY() - sprite.getSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() + mSprite.getSpeed());
+                        moveBottom(sprite);
                     }
                 }
                 break;
             case JoystickView.TOP:
-                if(mSprite.getY() - mSprite.getSpeed() >= 0) {
+                if(sprite.getY() - sprite.getSpeed() >= 0) {
 
-                    if(mMap.getY() + mSprite.getSpeed() <= 0) {
-                        mMap.setY(mMap.getY() + mSprite.getSpeed());
+                    if(map.getY() + sprite.getSpeed() <= 0) {
+                        map.setY(map.getY() + sprite.getSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() - mSprite.getSpeed());
+                        moveTop(sprite);
                     }
                 }
                 break;
             case JoystickView.LEFT:
-                if(mSprite.getX() - mSprite.getSpeed() >= 0) {
+                if(sprite.getX() - sprite.getSpeed() >= 0) {
 
-                    if(mMap.getX() + mSprite.getSpeed() <= 0) {
-                        mMap.setX(mMap.getX() + mSprite.getSpeed());
+                    if(map.getX() + sprite.getSpeed() <= 0) {
+                        map.setX(map.getX() + sprite.getSpeed());
                     } else {
-                        mSprite.setX(mSprite.getX() - mSprite.getSpeed());
+                        moveLeft(sprite);
                     }
                 }
                 break;
             case JoystickView.RIGHT:
-                if(mSprite.getX() <= mGameView.getWidth() - mSprite.getWidth() - mSprite.getSpeed()) {
+                if(sprite.getX() <= gameView.getWidth() - sprite.getWidth() - sprite.getSpeed()) {
 
-                    if(Math.abs(mMap.getX()) <= widthDifference - mSprite.getSpeed()) {
-                        mMap.setX(mMap.getX() - mSprite.getSpeed());
+                    if(Math.abs(map.getX()) <= widthDifference - sprite.getSpeed()) {
+                        map.setX(map.getX() - sprite.getSpeed());
                     } else {
-                        mSprite.setX(mSprite.getX() + mSprite.getSpeed());
+                        moveRight(sprite);
                     }
                 }
                 break;
             case JoystickView.BOTTOM_LEFT:
-                if(mSprite.getY() <= mGameView.getHeight() - mSprite.getHeight() - mSprite.getDiagonalSpeed()
-                        && mSprite.getX() - mSprite.getDiagonalSpeed() >= 0) {
+                if(sprite.getY() <= gameView.getHeight() - sprite.getHeight() - sprite.getDiagonalSpeed()
+                        && sprite.getX() - sprite.getDiagonalSpeed() >= 0) {
 
-                    if(Math.abs(mMap.getY()) <= heightDifference - mSprite.getDiagonalSpeed()
-                            && mMap.getX() + mSprite.getDiagonalSpeed() <= 0) {
-                        mMap.setY(mMap.getY() - mSprite.getDiagonalSpeed());
-                        mMap.setX(mMap.getX() + mSprite.getDiagonalSpeed());
+                    if(Math.abs(map.getY()) <= heightDifference - sprite.getDiagonalSpeed()
+                            && map.getX() + sprite.getDiagonalSpeed() <= 0) {
+                        map.setY(map.getY() - sprite.getDiagonalSpeed());
+                        map.setX(map.getX() + sprite.getDiagonalSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
-                        mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
+                        moveBottomLeft(sprite);
                     }
                 }
                 break;
             case JoystickView.BOTTOM_RIGHT:
-                if(mSprite.getY() <= mGameView.getHeight() - mSprite.getHeight() - mSprite.getDiagonalSpeed()
-                        && mSprite.getX() <= mGameView.getWidth() - mSprite.getWidth() - mSprite.getDiagonalSpeed()) {
+                if(sprite.getY() <= gameView.getHeight() - sprite.getHeight() - sprite.getDiagonalSpeed()
+                        && sprite.getX() <= gameView.getWidth() - sprite.getWidth() - sprite.getDiagonalSpeed()) {
 
-                    if(Math.abs(mMap.getY()) <= heightDifference - mSprite.getDiagonalSpeed()
-                            && Math.abs(mMap.getX()) <= widthDifference - mSprite.getDiagonalSpeed()) {
-                        mMap.setY(mMap.getY() - mSprite.getDiagonalSpeed());
-                        mMap.setX(mMap.getX() - mSprite.getDiagonalSpeed());
+                    if(Math.abs(map.getY()) <= heightDifference - sprite.getDiagonalSpeed()
+                            && Math.abs(map.getX()) <= widthDifference - sprite.getDiagonalSpeed()) {
+                        map.setY(map.getY() - sprite.getDiagonalSpeed());
+                        map.setX(map.getX() - sprite.getDiagonalSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() + mSprite.getDiagonalSpeed());
-                        mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
+                        moveBottomRight(sprite);
                     }
                 }
                 break;
             case JoystickView.TOP_LEFT:
-                if(mSprite.getY() - mSprite.getDiagonalSpeed() >= 0 && mSprite.getX() - mSprite.getDiagonalSpeed() >= 0) {
+                if(sprite.getY() - sprite.getDiagonalSpeed() >= 0 && sprite.getX() - sprite.getDiagonalSpeed() >= 0) {
 
-                    if(mMap.getY() + mSprite.getDiagonalSpeed() <= 0 && mMap.getX() + mSprite.getDiagonalSpeed() <= 0) {
-                        mMap.setY(mMap.getY() + mSprite.getDiagonalSpeed());
-                        mMap.setX(mMap.getX() + mSprite.getDiagonalSpeed());
+                    if(map.getY() + sprite.getDiagonalSpeed() <= 0 && map.getX() + sprite.getDiagonalSpeed() <= 0) {
+                        map.setY(map.getY() + sprite.getDiagonalSpeed());
+                        map.setX(map.getX() + sprite.getDiagonalSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
-                        mSprite.setX(mSprite.getX() - mSprite.getDiagonalSpeed());
+                        moveTopLeft(sprite);
                     }
                 }
                 break;
             case JoystickView.TOP_RIGHT:
-                if(mSprite.getY() - mSprite.getDiagonalSpeed() >= 0
-                        && mSprite.getX() <= mGameView.getWidth() - mSprite.getWidth() - mSprite.getDiagonalSpeed()) {
+                if(sprite.getY() - sprite.getDiagonalSpeed() >= 0
+                        && sprite.getX() <= gameView.getWidth() - sprite.getWidth() - sprite.getDiagonalSpeed()) {
 
-                    if(mMap.getY() + mSprite.getDiagonalSpeed() <= 0
-                            && Math.abs(mMap.getX()) <= widthDifference - mSprite.getDiagonalSpeed()) {
-                        mMap.setY(mMap.getY() + mSprite.getDiagonalSpeed());
-                        mMap.setX(mMap.getX() - mSprite.getDiagonalSpeed());
+                    if(map.getY() + sprite.getDiagonalSpeed() <= 0
+                            && Math.abs(map.getX()) <= widthDifference - sprite.getDiagonalSpeed()) {
+                        map.setY(map.getY() + sprite.getDiagonalSpeed());
+                        map.setX(map.getX() - sprite.getDiagonalSpeed());
                     } else {
-                        mSprite.setY(mSprite.getY() - mSprite.getDiagonalSpeed());
-                        mSprite.setX(mSprite.getX() + mSprite.getDiagonalSpeed());
+                        moveTopRight(sprite);
                     }
                 }
                 break;
         }
-        mSprite.nextAnimation(direction);
+        sprite.nextAnimation();
 
-//        Log.d("GameView:", mGameView.getWidth() + " " + mGameView.getHeight());
-//        Log.d("Player:", mSprite.getX() + " " + mSprite.getY());
-//        Log.d("Map:", mMap.getX() + " " + mMap.getY());
+//        Log.d("GameView:", gameView.getWidth() + " " + gameView.getHeight());
+//        Log.d("Player:", sprite.getX() + " " + sprite.getY());
+//        Log.d("Map:", map.getX() + " " + map.getY());
     }
 }

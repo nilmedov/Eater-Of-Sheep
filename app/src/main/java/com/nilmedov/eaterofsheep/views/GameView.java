@@ -11,7 +11,9 @@ import android.view.SurfaceView;
 import com.nilmedov.eaterofsheep.navigation.JoystickView;
 import com.nilmedov.eaterofsheep.navigation.PlayerNavigationController;
 import com.nilmedov.eaterofsheep.R;
+import com.nilmedov.eaterofsheep.navigation.SheepNavigationController;
 import com.nilmedov.eaterofsheep.objects.Map;
+import com.nilmedov.eaterofsheep.objects.Sheep;
 import com.nilmedov.eaterofsheep.objects.Sprite;
 import com.nilmedov.eaterofsheep.threads.GameLoopThread;
 
@@ -22,9 +24,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     private GameLoopThread mGameLoopThread;
 
     private PlayerNavigationController mPlayerNavigationController;
+    private SheepNavigationController mSheepNavigationController;
 
     private Map mMap;
     private Sprite mSprite;
+    private Sheep mSheep;
 
     public GameView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,9 +43,20 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
                 BitmapFactory.decodeResource(getResources(), R.mipmap.sprite),
                 0,
                 0,
-                10
+                10,
+                JoystickView.RIGHT
         );
+        mSheep = new Sheep(this,
+                BitmapFactory.decodeResource(getResources(), R.mipmap.sprite2),
+                100,
+                100,
+                10,
+                JoystickView.BOTTOM_RIGHT
+        );
+
         mPlayerNavigationController = new PlayerNavigationController(this, mSprite, mMap);
+        mSheepNavigationController = new SheepNavigationController(this, mSheep, mMap);
+
         mGameLoopThread.setRunning(true);
         mGameLoopThread.start();
     }
@@ -67,8 +82,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     public void doDraw(Canvas canvas) {
+        mSheepNavigationController.move();
+
         mMap.onDraw(canvas);
         mSprite.onDraw(canvas);
+        mSheep.onDraw(canvas);
     }
 
     public void onPause() {
@@ -83,7 +101,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
         joystick.setOnJoystickMoveListener(new JoystickView.OnJoystickMoveListener() {
             @Override
             public void onValueChanged(int angle, int power, int direction) {
-                mPlayerNavigationController.movePlayer(direction);
+                mSprite.setDirection(direction);
+                mPlayerNavigationController.move();
             }
         }, JoystickView.DEFAULT_LOOP_INTERVAL);
     }
